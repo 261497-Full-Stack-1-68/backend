@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TodoTable {
+  id        String   @id @default(uuid())
+  todoText  String   @db.VarChar(255)
+  isDone    Boolean  @default(false)
+  createdAt DateTime @default(now()) @db.Timestamp(3)
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp(3)
+
+  @@map("todo_tables")
+}
+
+model MemberProjectTable {
+  id        String   @id @default(uuid())
+  fullname  String   @db.VarChar(255)
+  code      String   @db.VarChar(255)
+  nickname  String   @db.VarChar(255)
+  imageUrl  String   @db.VarChar(255)
+
+  @@map("member_project_tables")
+}
