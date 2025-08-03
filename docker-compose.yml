@@ -28,7 +28,7 @@ services:
     networks:
       - pf-net
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_APP_USER}:${POSTGRES_APP_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+      - DATABASE_URL=postgresql://${POSTGRES_APP_USER}:${POSTGRES_APP_PASSWORD}@${PROJECT_NAME}-db:${POSTGRES_PORT}/${POSTGRES_DB}
     ports:
       - "3009:3000"
 
