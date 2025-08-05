@@ -2,9 +2,7 @@ FROM oven/bun:1.1
 
 WORKDIR /app
 
-COPY bun.lock package.json tsconfig.json ./
-COPY src ./src
-COPY prisma ./prisma
+COPY . .
 
 RUN bun install
 RUN bunx prisma generate

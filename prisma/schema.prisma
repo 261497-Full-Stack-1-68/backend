@@ -22,7 +22,7 @@ model MemberProjectTable {
   fullname  String   @db.VarChar(255)
   code      String   @db.VarChar(255)
   nickname  String   @db.VarChar(255)
-  imageUrl  String   @db.VarChar(255)
+  imageUrl  String   @db.Text
 
   @@map("member_project_tables")
 }
