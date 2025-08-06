@@ -18,11 +18,23 @@ model TodoTable {
 }
 
 model MemberProjectTable {
-  id        String   @id @default(uuid())
-  fullname  String   @db.VarChar(255)
-  code      String   @db.VarChar(255)
-  nickname  String   @db.VarChar(255)
-  imageUrl  String   @db.Text
+  id       String @id @default(uuid())
+  fullname String @db.VarChar(255)
+  code     String @db.VarChar(255)
+  nickname String @db.VarChar(255)
+  imageUrl String @db.Text
 
   @@map("member_project_tables")
+}
+
+model AnnouncementTable {
+  id        String    @id @default(uuid())
+  title     String    @db.VarChar(255)
+  content   String    @db.Text
+  image     String[]  @default([])
+  tags      String[]  @default([])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("announcement_tables")
 }
