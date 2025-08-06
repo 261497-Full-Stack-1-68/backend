@@ -115,7 +115,7 @@ app.get("/:id", async (c) => {
 });
 
 // DELETE /announcements - ลบประกาศตาม ID
-app.delete("/:id", async (c) => {
+app.delete("/", async (c) => {
   const body = await c.req.json();
   const { id } = body;
 
