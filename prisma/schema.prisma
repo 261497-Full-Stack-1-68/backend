@@ -10,7 +10,6 @@ datasource db {
 model TodoTable {
   id        String   @id @default(uuid())
   todoText  String   @db.VarChar(255)
-  isDone    Boolean  @default(false)
   createdAt DateTime @default(now()) @db.Timestamp(3)
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamp(3)
 
