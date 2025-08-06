@@ -4,7 +4,7 @@ import * as path from "path";
 import { writeFile } from "fs/promises";
 
 const prisma = new PrismaClient();
-const router = new Hono();
+const app = new Hono();
 
 // helper function สร้างชื่อไฟล์แบบสุ่ม
 function makeFileName(originalName: string) {
@@ -14,7 +14,7 @@ function makeFileName(originalName: string) {
 }
 
 // GET /announcements - ดึงประกาศทั้งหมด
-router.get("/", async (c) => {
+app.get("/", async (c) => {
   const tag = c.req.query("tag");
   
   let whereClause = {};
@@ -36,7 +36,7 @@ router.get("/", async (c) => {
 });
 
 // GET /announcements/tags - ดึง tags ทั้งหมดที่มี
-router.get("/tags", async (c) => {
+app.get("/tags", async (c) => {
   const announcements = await prisma.announcementTable.findMany({
     select: { tags: true }
   });
@@ -50,7 +50,7 @@ router.get("/tags", async (c) => {
 });
 
 // POST /announcements - สร้างประกาศใหม่
-router.post("/", async (c) => {
+app.post("/", async (c) => {
   // รับ multipart form data
   const form = await c.req.formData();
   const title = form.get("title") as string;
@@ -103,7 +103,7 @@ router.post("/", async (c) => {
 });
 
 // GET /announcements/:id - ดึงประกาศตาม ID
-router.get("/:id", async (c) => {
+app.get("/:id", async (c) => {
   const id = c.req.param("id");
   const announcement = await prisma.announcementTable.findUnique({
     where: { id },
@@ -114,4 +114,25 @@ router.get("/:id", async (c) => {
   return c.json(announcement);
 });
 
-export default router;
+// DELETE /announcements - ลบประกาศตาม ID
+app.delete("/:id", async (c) => {
+  const body = await c.req.json();
+  const { id } = body;
+
+  if (!id) {
+    return c.json({ error: "ID is required" }, 400);
+  }
+  const announcement = await prisma.announcementTable.findUnique({
+    where: { id },
+  });
+  if (!announcement) {
+    return c.json({ error: "Announcement not found" }, 404);
+  }
+
+  await prisma.announcementTable.delete({
+    where: { id },
+  });
+  return c.json({ message: "Announcement deleted" });
+});
+
+export default app;
